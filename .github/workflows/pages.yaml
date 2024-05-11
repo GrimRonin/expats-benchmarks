@@ -1,0 +1,40 @@
+name: Pages
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "6"
+      - name: Build page
+        run: |
+          dotnet ./reporter/UnityPerformanceBenchmarkReporter.dll \
+            --baseline=./baseline/2024-05-08T09-50-46=37ab395f9884dc74bfeb79b0acfa2269962b64eb.xml \
+            --results=./results/ \
+            --reportdirpath=./ \
+            --htmlindex
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./UnityPerformanceBenchmark"
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

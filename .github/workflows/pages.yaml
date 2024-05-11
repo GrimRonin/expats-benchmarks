@@ -15,10 +15,10 @@ jobs:
           dotnet-version: "6"
       - name: Build page
         run: |
-          dotnet ./reporter/UnityPerformanceBenchmarkReporter.dll \
-            --baseline=./baseline/2024-05-08T09-50-46=37ab395f9884dc74bfeb79b0acfa2269962b64eb.xml \
-            --results=./results/ \
-            --reportdirpath=./ \
+          dotnet ./reporter/UnityPerformanceBenchmarkReporter.dll `\
+            --baseline=./baseline/2024-05-08T09-50-46=37ab395f9884dc74bfeb79b0acfa2269962b64eb.xml `\
+            --results=./results/ `\
+            --reportdirpath=./ `\
             --htmlindex
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
